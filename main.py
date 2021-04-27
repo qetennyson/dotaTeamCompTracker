@@ -1,6 +1,6 @@
 import sqlite3
 import sys
-from dbfunctions import create_player_record, update_player_record, display_record
+from dbfunctions import create_player_record, update_player_record, display_record, delete_player_record
 
 
 def main():
@@ -28,7 +28,8 @@ def main():
             else:
                 display_record(d_player)
         elif cmd.upper() == 'R':
-            pass
+            r_player = input("Enter player to remove: ")
+            delete_player_record(r_player)
         elif cmd.upper() == 'Q':
             sys.exit()
         else:

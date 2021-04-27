@@ -2,6 +2,8 @@ import sqlite3
 
 
 def create_player_record():
+    """ Create a new player record in the teamcommcomp DB which requires a name
+    position, and 3 heroes. """
     while True:
         info = []
         heroes = []
@@ -32,6 +34,12 @@ def create_player_record():
 
 
 def update_player_record(player):
+    """ Updates an existing player record in the teamcommcomp DB.  The function asks for a new
+        position, and 3 heroes.
+
+    :param: player - the name of the player that is being updated."""
+
+    # TODO: How to get specific updates working?
     while True:
         print(f"Updating record for {player.upper()}")
         print("Current record: \n")
@@ -76,6 +84,10 @@ def update_player_record(player):
 
 
 def display_record(player=None):
+    """ Displays all the player data in the teamcommcomp DB by default, and optionally
+    displays a specific player's record.
+
+    :param - player (Optional) - the specific player record to display. """
     with sqlite3.connect('teamcommcomp.db') as conn:
         c = conn.cursor()
         if player:
@@ -87,3 +99,21 @@ def display_record(player=None):
 
         for row in rows:
             print(row)
+
+
+def delete_player_record(player):
+    """ Confirms and deletes a specific player record from teamcommcomp DB
+    :param - player - the name of the player being deleted. """
+    print("Deleting the following record:\n ")
+    display_record(player)
+    stop = input(f"\nAre you SURE you want to delete {player} (Y/N)?: ")
+
+    if stop.upper()[0] == 'N':
+        print("Exiting Delete Mode...")
+        return
+    elif stop.upper()[0] == 'Y':
+        with sqlite3.connect('teamcommcomp.db') as conn:
+            c = conn.cursor()
+            c.execute("DELETE FROM Players WHERE name=:pl_name", {'pl_name': player})
+
+        print(f'Record for {player} permanently deleted.')
